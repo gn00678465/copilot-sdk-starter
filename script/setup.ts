@@ -91,30 +91,20 @@ function main() {
   console.log(`Selected agents: ${selectedAgents.join(', ')}`);
 
   try {
-    console.log(`Checking status of skill: ${SKILL_NAME}...`);
-    
-    // Check if skill is installed in the project scope
-    const listOutput = execSync('npx skills list', { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
-    const isInstalled = listOutput.includes(SKILL_NAME);
+    // Build and run the skills add command
+    const agentFlags = selectedAgents.map(agent => `-a ${agent}`).join(' ');
+    const command = `npx skills add ${SOURCE_REPO} -s ${SKILL_NAME} ${agentFlags} -y`;
 
-    if (isInstalled) {
-      console.log(`Skill '${SKILL_NAME}' is already installed. Running update...`);
-      execSync('npx skills update', { stdio: 'inherit' });
-    } else {
-      console.log(`Skill '${SKILL_NAME}' not found. Installing...`);
-      const agentFlags = selectedAgents.map(agent => `-a ${agent}`).join(' ');
-      const command = `npx skills add ${SOURCE_REPO} -s ${SKILL_NAME} ${agentFlags} -y`;
-      
-      console.log(`Executing: ${command}`);
-      execSync(command, { stdio: 'inherit' });
-    }
+    console.log(`Executing: ${command}`);
+    execSync(command, { stdio: 'inherit' });
 
-    // Create symlinks for selected agents
+    // Create symlinks for selected agents that have a directory mapping
     for (const agent of selectedAgents) {
-      if (agent === 'claude-code') continue;
-      createSymlink(agent as GeminiAndCopilotAgent, SKILL_NAME);
+      if (agent in AGENT_DIR_MAP) {
+        createSymlink(agent as GeminiAndCopilotAgent, SKILL_NAME);
+      }
     }
-    
+
     console.log('\n✅ Setup completed successfully!');
   } catch (error) {
     console.error('\n❌ Setup failed:');
