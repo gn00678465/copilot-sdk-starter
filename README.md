@@ -5,56 +5,71 @@ A minimal starter template for building GitHub Copilot extensions using the [@gi
 ## ✨ Features
 
 - 🔧 Pre-configured with Copilot SDK
-- ⚡ Bun runtime support (also works with Node.js)
+- ⚡ Bun / pnpm runtime support
 - 📦 TypeScript ready
+- 🤖 Multi-agent skill support (GitHub Copilot, Gemini CLI, Claude Code)
 - 🎯 Minimal setup - get started in minutes
 
 ## 🚀 Quick Start
 
 **1. Use this template**
+
 Click "Use this template" button or:
 ```bash
 gh repo create my-copilot-extension --template yourusername/copilot-sdk-starter
 ```
 
-**2. Install dependencies**
+**2. Install Copilot Skills**
+
 ```bash
-# Install Copilot Skills first
-npm run setup
+# Set up skills for all agents (default)
+pnpm setup
 # or
 bun run setup
 
-# Then install project dependencies
-bun install
-# or
-npm install
+# Set up skills for specific agents only
+pnpm setup -a github-copilot
+pnpm setup -a claude-code -a gemini-cli
 ```
 
-**3. Start building**
+Available agents: `claude-code`, `github-copilot`, `gemini-cli`
+
+**3. Install project dependencies**
+
+```bash
+pnpm install
+# or
+bun install
+```
+
+**4. Start building**
+
+Edit `index.js` to build your Copilot extension, then run:
 ```bash
 bun run index.js
-# or
-npm run index.js
 ```
 
 ## 📁 Project Structure
 
 ```
 copilot-sdk-starter/
-├── index.js          # Your extension entry point
+├── script/
+│   └── setup.ts      # Skill installation & setup script
+├── index.js          # Your extension entry point (create this)
 ├── package.json      # Dependencies and scripts
 ├── README.md         # This file
-└── .gitignore       # Git ignore rules
+└── .gitignore        # Git ignore rules
 ```
 
 ## 🛠️ Development
 
-Edit `index.js` to build your Copilot extension. Refer to the [Copilot SDK documentation](https://github.com/copilot-extensions/copilot-sdk.js) for available APIs.
+Refer to the [Copilot SDK documentation](https://github.com/copilot-extensions/copilot-sdk.js) for available APIs.
 
 ## 📦 Built With
 
 - [@github/copilot-sdk](https://github.com/copilot-extensions/copilot-sdk.js) - GitHub Copilot SDK
-- [Bun](https://bun.com) - Fast JavaScript runtime (optional)
+- [Bun](https://bun.com) - Fast JavaScript runtime
+- [pnpm](https://pnpm.io) - Fast, disk space efficient package manager
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 
 ## 📝 License

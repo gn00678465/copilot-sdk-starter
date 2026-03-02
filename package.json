@@ -1,6 +1,6 @@
 {
   "name": "copilot-sdk-starter",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "A minimal starter template for building GitHub Copilot extensions",
   "main": "index.js",
   "type": "module",
